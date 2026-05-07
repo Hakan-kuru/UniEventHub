@@ -1,13 +1,13 @@
 package com.hakankuru.EventTime.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "universities")
+@Getter
+@Setter
 public class University {
 
     @Id
@@ -15,5 +15,6 @@ public class University {
     private Long universityId;
 
     private String name;
+
     private String location;
 }
