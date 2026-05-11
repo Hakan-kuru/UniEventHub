@@ -1,7 +1,6 @@
 package com.hakankuru.EventTime.entity;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
 
 @Entity
 @Table(name = "clubs")

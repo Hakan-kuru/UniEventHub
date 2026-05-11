@@ -2,7 +2,7 @@ package com.hakankuru.EventTime.controller;
 
 import com.hakankuru.EventTime.dto.LoginRequest;
 import com.hakankuru.EventTime.dto.RegisterRequest;
-import com.hakankuru.EventTime.entity.Department;
+import com.hakankuru.EventTime.entity.Departments;
 import com.hakankuru.EventTime.entity.User;
 import com.hakankuru.EventTime.repository.DepartmentRepository;
 import com.hakankuru.EventTime.repository.UserRepository;
@@ -32,7 +32,7 @@ public class AuthController {
             return "EMAIL_ALREADY_EXISTS";
         }
 
-        Department department = departmentRepository.findById(request.departmentId)
+        Departments departments = departmentRepository.findById(request.departmentId)
                 .orElseThrow(() -> new RuntimeException("Department not found"));
 
         User user = new User();
@@ -41,7 +41,7 @@ public class AuthController {
         user.setEmail(request.email);
         user.setPassword(request.password);
 
-        user.setDepartment(department);
+        user.setDepartments(departments);
 
         user.setEmailVerified(false);
 

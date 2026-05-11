@@ -1,4 +1,4 @@
-package com.hakankuru.eventhub.ui.theme
+package com.hakankuru.eventhub.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
