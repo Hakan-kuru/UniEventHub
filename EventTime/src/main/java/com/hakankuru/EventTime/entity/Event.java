@@ -1,12 +1,15 @@
 package com.hakankuru.EventTime.entity;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "events")
+@Getter
+@Setter
 public class Event {
 
     @Id
