@@ -1,4 +1,4 @@
-package com.hakankuru.eventhub.data.model
+package com.hakankuru.eventhub.data.remote.request
 
 data class LoginRequest(
 

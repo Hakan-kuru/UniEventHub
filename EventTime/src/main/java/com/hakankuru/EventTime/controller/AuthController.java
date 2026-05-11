@@ -1,72 +1,69 @@
 package com.hakankuru.EventTime.controller;
 
+import com.hakankuru.EventTime.dto.AuthResponse;
 import com.hakankuru.EventTime.dto.LoginRequest;
 import com.hakankuru.EventTime.dto.RegisterRequest;
 import com.hakankuru.EventTime.entity.Departments;
 import com.hakankuru.EventTime.entity.User;
 import com.hakankuru.EventTime.repository.DepartmentRepository;
 import com.hakankuru.EventTime.repository.UserRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Random;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
+@CrossOrigin // Android bağlantısı için
 public class AuthController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final DepartmentRepository departmentRepository;
 
-    @Autowired
-    private DepartmentRepository departmentRepository;
-
-    // REGISTER
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest request) {
+    public AuthResponse register(
+            @RequestBody RegisterRequest request
+    ) {
 
-        boolean exists = userRepository.findByEmail(request.email).isPresent();
-
-        if (exists) {
-            return "EMAIL_ALREADY_EXISTS";
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already exists");
         }
 
-        Departments departments = departmentRepository.findById(request.departmentId)
-                .orElseThrow(() -> new RuntimeException("Department not found"));
+        Departments department = departmentRepository.findById(
+                request.getDepartmentId()
+        ).orElseThrow(() -> new RuntimeException("Department not found"));
 
         User user = new User();
 
-        user.setName(request.name);
-        user.setEmail(request.email);
-        user.setPassword(request.password);
-
-        user.setDepartments(departments);
-
-        user.setEmailVerified(false);
-
-        String code = String.valueOf(
-                100000 + new Random().nextInt(900000)
-        );
-
-        user.setVerificationCode(code);
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setDepartments(department);
 
         userRepository.save(user);
 
-        return code;
+        return new AuthResponse(
+                user.getUserId(),
+                user.getName(),
+                user.getEmail()
+        );
     }
 
-    // LOGIN
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
+    public AuthResponse login(
+            @RequestBody LoginRequest request
+    ) {
 
-        User user = userRepository.findByEmail(request.email)
+        User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!user.getPassword().equals(request.password)) {
-            return "WRONG_PASSWORD";
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new RuntimeException("Wrong password");
         }
 
-        return "SUCCESS";
+        return new AuthResponse(
+                user.getUserId(),
+                user.getName(),
+                user.getEmail()
+        );
     }
 }

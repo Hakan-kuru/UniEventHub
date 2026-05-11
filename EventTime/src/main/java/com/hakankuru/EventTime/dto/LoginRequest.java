@@ -1,7 +1,11 @@
 package com.hakankuru.EventTime.dto;
 
-public class LoginRequest {
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+public class LoginRequest {
     public String email;
     public String password;
 }
