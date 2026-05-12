@@ -25,4 +25,7 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Departments departments;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }

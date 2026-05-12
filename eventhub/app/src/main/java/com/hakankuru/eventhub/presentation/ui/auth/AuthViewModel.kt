@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hakankuru.eventhub.data.remote.request.AuthResponse
+import com.hakankuru.eventhub.data.local.SessionManager
 import com.hakankuru.eventhub.domain.usecase.auth.LoginUseCase
 import com.hakankuru.eventhub.domain.usecase.auth.RegisterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    private val registerUseCase: RegisterUseCase
+    private val registerUseCase: RegisterUseCase,
+    private val sessionManager: SessionManager
 ) : ViewModel() {
 
     var isLoading = mutableStateOf(false)
@@ -33,6 +35,8 @@ class AuthViewModel @Inject constructor(
                 error.value = null
 
                 val response = loginUseCase(email, password)
+
+                sessionManager.saveAuthSession(isLoggedIn = true, token = response.token)
 
                 onSuccess(response)
 
@@ -62,6 +66,8 @@ class AuthViewModel @Inject constructor(
                     password,
                     departmentId
                 )
+
+                sessionManager.saveAuthSession(isLoggedIn = true, token = response.token)
 
                 onSuccess(response)
 

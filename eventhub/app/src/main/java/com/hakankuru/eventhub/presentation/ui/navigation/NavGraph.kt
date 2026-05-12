@@ -9,11 +9,15 @@ import com.hakankuru.eventhub.presentation.ui.screen.LoginScreen
 import com.hakankuru.eventhub.presentation.ui.screen.RegisterScreen
 
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(
+    navController: NavHostController,
+    startDestination: String = Screen.Login.route,
+    onLogoutClick: () -> Unit
+) {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Login.route
+        startDestination = startDestination
     ) {
 
         composable(Screen.Login.route) {
@@ -42,6 +46,7 @@ fun NavGraph(navController: NavHostController) {
         composable(Screen.Home.route) {
             HomeScreen(
                 onLogout = {
+                    onLogoutClick()
                     navController.navigate(Screen.Login.route) {
                         popUpTo(Screen.Home.route) { inclusive = true }
                     }

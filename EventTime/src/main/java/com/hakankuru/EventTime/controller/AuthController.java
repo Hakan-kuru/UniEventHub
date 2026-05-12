@@ -7,7 +7,13 @@ import com.hakankuru.EventTime.entity.Departments;
 import com.hakankuru.EventTime.entity.User;
 import com.hakankuru.EventTime.repository.DepartmentRepository;
 import com.hakankuru.EventTime.repository.UserRepository;
+import com.hakankuru.EventTime.security.CustomUserDetails;
+import com.hakankuru.EventTime.security.JwtService;
+import com.hakankuru.EventTime.entity.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +24,9 @@ public class AuthController {
 
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
     public AuthResponse register(
@@ -36,15 +45,20 @@ public class AuthController {
 
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setDepartments(department);
+        user.setRole(Role.USER); // Default role
 
         userRepository.save(user);
+
+        CustomUserDetails customUserDetails = new CustomUserDetails(user);
+        String jwtToken = jwtService.generateToken(customUserDetails);
 
         return new AuthResponse(
                 user.getUserId(),
                 user.getName(),
-                user.getEmail()
+                user.getEmail(),
+                jwtToken
         );
     }
 
@@ -52,18 +66,26 @@ public class AuthController {
     public AuthResponse login(
             @RequestBody LoginRequest request
     ) {
+        // Authenticate the user (this checks email and password securely using our configuration)
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
 
+        // If we reach here, authentication is successful
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!user.getPassword().equals(request.getPassword())) {
-            throw new RuntimeException("Wrong password");
-        }
+        CustomUserDetails customUserDetails = new CustomUserDetails(user);
+        String jwtToken = jwtService.generateToken(customUserDetails);
 
         return new AuthResponse(
                 user.getUserId(),
                 user.getName(),
-                user.getEmail()
+                user.getEmail(),
+                jwtToken
         );
     }
 }

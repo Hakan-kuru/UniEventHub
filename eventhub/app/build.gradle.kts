@@ -43,6 +43,8 @@ android {
 
 dependencies {
 
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
     // 🔥 HILT
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
