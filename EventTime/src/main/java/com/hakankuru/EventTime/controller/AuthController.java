@@ -9,7 +9,7 @@ import com.hakankuru.EventTime.repository.DepartmentRepository;
 import com.hakankuru.EventTime.repository.UserRepository;
 import com.hakankuru.EventTime.security.CustomUserDetails;
 import com.hakankuru.EventTime.security.JwtService;
-import com.hakankuru.EventTime.entity.Role;
+import com.hakankuru.EventTime.entity.GlobalRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,7 +47,7 @@ public class AuthController {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setDepartments(department);
-        user.setRole(Role.USER); // Default role
+        user.setGlobalRole(GlobalRole.USER); // Default role
 
         userRepository.save(user);
 

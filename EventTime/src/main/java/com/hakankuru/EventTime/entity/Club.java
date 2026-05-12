@@ -2,8 +2,13 @@ package com.hakankuru.EventTime.entity;
 
 import jakarta.persistence.*;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "clubs")
+@Getter
+@Setter
 public class Club {
 
     @Id

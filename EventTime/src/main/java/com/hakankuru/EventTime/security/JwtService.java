@@ -33,7 +33,12 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        Map<String, Object> extraClaims = new HashMap<>();
+        if (userDetails instanceof CustomUserDetails customUserDetails) {
+            extraClaims.put("userId", customUserDetails.getUser().getUserId());
+            extraClaims.put("globalRole", customUserDetails.getUser().getGlobalRole() != null ? customUserDetails.getUser().getGlobalRole().name() : "USER");
+        }
+        return generateToken(extraClaims, userDetails);
     }
 
     public String generateToken(

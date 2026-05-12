@@ -1,49 +1,29 @@
 package com.hakankuru.EventTime.controller;
 
-import com.hakankuru.EventTime.entity.User;
-import com.hakankuru.EventTime.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import com.hakankuru.EventTime.dto.UserProfileResponse;
+import com.hakankuru.EventTime.security.CustomUserDetails;
+import com.hakankuru.EventTime.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserService userService;
 
-    // 1️⃣ TÜM USERLAR
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    // 2️⃣ ID İLE USER GETİR
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-    }
-
-    // 3️⃣ USER EKLE
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
-    }
-
-    // 4️⃣ USER SİL
-    @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
-        return "User deleted";
-    }
-
-    // 5️⃣ EMAIL İLE USER BUL (login için temel)
-    @GetMapping("/email")
-    public User getByEmail(@RequestParam String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    @GetMapping("/me")
+    public ResponseEntity<UserProfileResponse> getCurrentUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(401).build();
+        }
+        
+        UserProfileResponse profile = userService.getUserProfile(userDetails.getUser().getUserId());
+        return ResponseEntity.ok(profile);
     }
 }

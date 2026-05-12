@@ -27,5 +27,5 @@ public class User {
     private Departments departments;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private GlobalRole globalRole;
 }
