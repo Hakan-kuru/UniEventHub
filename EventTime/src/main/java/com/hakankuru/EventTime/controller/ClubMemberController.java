@@ -7,12 +7,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/clubs/{clubId}/members")
 @RequiredArgsConstructor
 public class ClubMemberController {
 
     private final ClubMemberService clubMemberService;
+
+    @GetMapping
+    @PreAuthorize("@clubSecurity.isClubAdmin(authentication, #clubId) or hasRole('SUPER_ADMIN')")
+    public ResponseEntity<List<com.hakankuru.EventTime.dto.ClubMemberResponse>> getClubMembers(@PathVariable Long clubId) {
+        return ResponseEntity.ok(clubMemberService.getClubMembers(clubId));
+    }
 
     @PostMapping
     @PreAuthorize("@clubSecurity.isClubAdmin(authentication, #clubId) or hasRole('SUPER_ADMIN')")
