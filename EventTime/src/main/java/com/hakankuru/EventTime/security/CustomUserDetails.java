@@ -26,7 +26,7 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Fallback to USER if role is null for older records
-        String roleName = user.getRole() != null ? user.getRole().name() : "USER";
+        String roleName = user.getGlobalRole() != null ? user.getGlobalRole().name() : "USER";
         return List.of(new SimpleGrantedAuthority("ROLE_" + roleName));
     }
 

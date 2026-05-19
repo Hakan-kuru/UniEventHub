@@ -3,8 +3,13 @@ package com.hakankuru.EventTime.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "club_members")
+@Getter
+@Setter
 public class ClubMember {
 
     @EmbeddedId
@@ -19,6 +24,9 @@ public class ClubMember {
     @MapsId("clubId")
     @JoinColumn(name = "club_id")
     private Club club;
+
+    @Enumerated(EnumType.STRING)
+    private ClubRole clubRole;
 
     private LocalDateTime startAt;
     private LocalDateTime endAt;
