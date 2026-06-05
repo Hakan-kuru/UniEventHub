@@ -13,11 +13,9 @@ sealed class Route(val route: String) {
     object Profile : Route("profile")
 
     // ── Admin Panel ────────────────────────────────────────────────────────
-    object AdminDashboard : Route("admin_dashboard")
-    object AdminCreateClub : Route("admin_create_club")
-    // TODO – Sprint 2: implement aşağıdaki route'lar
-    // object AdminUniversity : Route("admin_university")
-    // object AdminUsers      : Route("admin_users")
+    object AdminDashboard   : Route("admin_dashboard")
+    object AdminCreateClub  : Route("admin_create_club")
+    object SuperAdminPanel  : Route("super_admin_panel")
 
     // ── Club Admin ─────────────────────────────────────────────────────────
     object ClubAdminCreateEvent : Route("club_admin_create_event/{clubId}") {

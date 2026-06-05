@@ -6,15 +6,19 @@ import com.hakankuru.EventTime.dto.EventResponse;
 import com.hakankuru.EventTime.dto.UserUpdateRequest;
 import com.hakankuru.EventTime.entity.ClubMember;
 import com.hakankuru.EventTime.entity.EventParticipant;
+import com.hakankuru.EventTime.entity.GlobalRole;
 import com.hakankuru.EventTime.entity.User;
+import com.hakankuru.EventTime.entity.UserRole;
 import com.hakankuru.EventTime.repository.ClubMemberRepository;
 import com.hakankuru.EventTime.repository.EventParticipantRepository;
 import com.hakankuru.EventTime.repository.UserRepository;
+import com.hakankuru.EventTime.repository.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +28,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final EventParticipantRepository eventParticipantRepository;
+    private final UserRoleRepository userRoleRepository;
 
     public UserProfileResponse getUserProfile(Long userId) {
         User user = userRepository.findById(userId)
@@ -39,12 +44,23 @@ public class UserService {
                 ))
                 .collect(Collectors.toList());
 
+        // ADMIN rolü için universityId'yi users_roles tablosundan çek
+        Long universityId = null;
+        if (user.getGlobalRole() == GlobalRole.ADMIN) {
+            Optional<UserRole> adminRole = userRoleRepository
+                    .findByUser_UserIdAndRole(userId, GlobalRole.ADMIN.name());
+            universityId = adminRole
+                    .map(r -> r.getUniversity() != null ? r.getUniversity().getUniversityId() : null)
+                    .orElse(null);
+        }
+
         return new UserProfileResponse(
             user.getUserId(),
             user.getName(),
             user.getEmail(),
             user.getGlobalRole(),
-            userClubDTOs
+            userClubDTOs,
+            universityId
         );
     }
 

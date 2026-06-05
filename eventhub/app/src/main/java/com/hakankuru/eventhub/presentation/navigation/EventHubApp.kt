@@ -25,6 +25,7 @@ import com.hakankuru.eventhub.domain.model.RoleGuard
 import com.hakankuru.eventhub.presentation.admin.AdminCreateClubScreen
 import com.hakankuru.eventhub.presentation.admin.AdminDashboardScreen
 import com.hakankuru.eventhub.presentation.admin.AdminLoginScreen
+import com.hakankuru.eventhub.presentation.admin.SuperAdminPanelScreen
 import com.hakankuru.eventhub.presentation.clubs.ClubAdminCreateEventScreen
 import com.hakankuru.eventhub.presentation.clubs.ClubAdminMembersScreen
 import com.hakankuru.eventhub.presentation.clubs.ClubsScreen
@@ -172,6 +173,9 @@ fun EventHubApp(
                     AdminDashboardScreen(
                         onNavigateToCreateClub = {
                             navController.navigate(Route.AdminCreateClub.route)
+                        },
+                        onNavigateToSuperAdminPanel = {
+                            navController.navigate(Route.SuperAdminPanel.route)
                         }
                     )
                 } else {
@@ -185,6 +189,19 @@ fun EventHubApp(
                 val profile = (sessionState as? SessionState.Authenticated)?.profile
                 if (RoleGuard.isSuperAdmin(profile)) {
                     AdminCreateClubScreen(
+                        onNavigateBack = { navController.popBackStack() }
+                    )
+                } else {
+                    UnauthorizedScreen(
+                        onNavigateBack = { navController.popBackStack() }
+                    )
+                }
+            }
+
+            composable(Route.SuperAdminPanel.route) {
+                val profile = (sessionState as? SessionState.Authenticated)?.profile
+                if (RoleGuard.isSuperAdmin(profile)) {
+                    SuperAdminPanelScreen(
                         onNavigateBack = { navController.popBackStack() }
                     )
                 } else {
