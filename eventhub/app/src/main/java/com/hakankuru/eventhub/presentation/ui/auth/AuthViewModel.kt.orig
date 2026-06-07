@@ -42,11 +42,8 @@ class AuthViewModel @Inject constructor(
                     role  = response.role        // ← role artık kaydediliyor
                 )
 
-                // DataStore yazma islemi tamamlandigini varsayiyoruz cunku suspend bir fonksiyon olarak asagida devam edecek. 
-                // Ancak daha guvenli olmasi icin UI'i bilgilendiriyoruz
-                kotlinx.coroutines.delay(100)
-                
                 onSuccess(response)
+
             } catch (e: Exception) {
                 error.value = e.message ?: "Login error"
             } finally {

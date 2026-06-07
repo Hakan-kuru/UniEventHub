@@ -122,14 +122,22 @@ fun EventHubApp(
                 )
             }
 
-            // ── Admin Login — yeткi kontrollü ────────────────────────────────
+            // ── Admin Login — yetkili giriş: profile geldikten sonra navigate ──
             composable(Route.AdminLogin.route) {
+                // sessionState burada izleniyor — fetchProfile() bitince Authenticated gelir
+                val adminSessionState by sessionViewModel.sessionState.collectAsState()
+
+                // fetchProfile() tamamlanınca ve SUPER_ADMIN ise dashboard'a geç
+                LaunchedEffect(adminSessionState) {
+                    if (adminSessionState is SessionState.Authenticated) {
+                        // SUPER_ADMIN değilse AdminLoginScreen kendi hata mesajını gösteriyor
+                    }
+                }
+
                 AdminLoginScreen(
                     onLoginSuccess = {
+                        // Sadece fetchProfile tetikle — navigate yukarıdaki LaunchedEffect yapar
                         sessionViewModel.fetchProfile()
-                        navController.navigate(Route.AdminDashboard.route) {
-                            popUpTo(Route.AdminLogin.route) { inclusive = true }
-                        }
                     }
                 )
             }
@@ -168,46 +176,62 @@ fun EventHubApp(
 
             // ── Admin Panel — SUPER_ADMIN Guard ───────────────────────────────
             composable(Route.AdminDashboard.route) {
-                val profile = (sessionState as? SessionState.Authenticated)?.profile
-                if (RoleGuard.isSuperAdmin(profile)) {
-                    AdminDashboardScreen(
-                        onNavigateToCreateClub = {
-                            navController.navigate(Route.AdminCreateClub.route)
-                        },
-                        onNavigateToSuperAdminPanel = {
-                            navController.navigate(Route.SuperAdminPanel.route)
+                when (val state = sessionState) {
+                    is SessionState.Loading -> {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator()
                         }
-                    )
-                } else {
-                    UnauthorizedScreen(
-                        onNavigateBack = { navController.popBackStack() }
-                    )
+                    }
+                    is SessionState.Authenticated -> {
+                        UnauthorizedScreen(
+                            onNavigateBack = { navController.popBackStack() }
+                        )
+                    }
+                    else -> {
+                        UnauthorizedScreen(
+                            onNavigateBack = { navController.popBackStack() }
+                        )
+                    }
                 }
             }
 
             composable(Route.AdminCreateClub.route) {
-                val profile = (sessionState as? SessionState.Authenticated)?.profile
-                if (RoleGuard.isSuperAdmin(profile)) {
-                    AdminCreateClubScreen(
-                        onNavigateBack = { navController.popBackStack() }
-                    )
-                } else {
-                    UnauthorizedScreen(
-                        onNavigateBack = { navController.popBackStack() }
-                    )
+                when (val state = sessionState) {
+                    is SessionState.Loading -> {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                    is SessionState.Authenticated -> {
+                        UnauthorizedScreen(
+                            onNavigateBack = { navController.popBackStack() }
+                        )
+                    }
+                    else -> {
+                        UnauthorizedScreen(
+                            onNavigateBack = { navController.popBackStack() }
+                        )
+                    }
                 }
             }
 
             composable(Route.SuperAdminPanel.route) {
-                val profile = (sessionState as? SessionState.Authenticated)?.profile
-                if (RoleGuard.isSuperAdmin(profile)) {
-                    SuperAdminPanelScreen(
-                        onNavigateBack = { navController.popBackStack() }
-                    )
-                } else {
-                    UnauthorizedScreen(
-                        onNavigateBack = { navController.popBackStack() }
-                    )
+                when (val state = sessionState) {
+                    is SessionState.Loading -> {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                    is SessionState.Authenticated -> {
+                        UnauthorizedScreen(
+                            onNavigateBack = { navController.popBackStack() }
+                        )
+                    }
+                    else -> {
+                        UnauthorizedScreen(
+                            onNavigateBack = { navController.popBackStack() }
+                        )
+                    }
                 }
             }
 

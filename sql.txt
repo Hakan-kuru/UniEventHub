@@ -1,0 +1,12 @@
+4	"hakan6"	"6@test.com"	1	"$2a$10$428wrFF5iCdlNQ4OI4D1f.Y12Y12NSi46K4xK.jr0dUHlMNfSrali"				"USER"
+5	"hakan7"	"7@test.com"	1	"$2a$10$qwBXjxxWLkK3qfHUFYL3j.RsSwRiTZlKAPd/ju4yNXqZOhNthsb.y"				"USER"
+6	"8"	"8@test.com"	1	"$2a$10$Fz9h/.SAquXtvvVQ9t58KOPrZLgiAcji2Ogh4LhvLeRHt0sHXxsEC"				"USER"
+7	"9"	"9@test.com"	1	"$2a$10$iyD7ndiEXsD5ooLNrQX.qe90RvLEnZ3L0xJ7WPCypCWcaUkTKHcuK"				"USER"
+8	"admin"	"admin@test.com"	1	"$2a$10$jPsWshwRRIFokG2z./oKheShj5g4PJxlruVVPw9O6PRD92gQk5Bqu"				"SUPER_ADMIN"
+1	"Hakan"	"hakan@test.com"	1	"123456"	false	"817438"		"USER"
+2	"hakan"	"hakan2@test.com"	1	"123456"				"USER"
+3	"hakan"	"hakan@test3.com"	1	"$2a$10$x.aiUzyE2fNeWRZ8jozVje1uomOYu/kei./QwuKlCgL1jcjC5wNW2"			"USER"	"USER"
+
+users_roles tablosu;
+user_id  role          id      university_id
+8	"SUPER_ADMIN"	1	null

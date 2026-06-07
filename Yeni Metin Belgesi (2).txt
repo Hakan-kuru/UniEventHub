@@ -1,0 +1,179 @@
+---------------------------- PROCESS STARTED (24817) for package com.hakankuru.eventhub ----------------------------
+2026-06-07 18:42:43.619 24817-24817 nativeloader            com.hakankuru.eventhub               D  Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+2026-06-07 18:42:43.762 24817-24817 ApplicationLoaders      com.hakankuru.eventhub               D  Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+2026-06-07 18:42:43.762 24817-24817 ApplicationLoaders      com.hakankuru.eventhub               D  Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+2026-06-07 18:42:44.338 24817-24817 nativeloader            com.hakankuru.eventhub               D  Configuring clns-9 for other apk /data/app/~~SLYUTDqebunAddKppGOlNg==/com.hakankuru.eventhub-xgn-F4r-jecPBQhc2wHlEA==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~SLYUTDqebunAddKppGOlNg==/com.hakankuru.eventhub-xgn-F4r-jecPBQhc2wHlEA==/lib/x86_64:/data/app/~~SLYUTDqebunAddKppGOlNg==/com.hakankuru.eventhub-xgn-F4r-jecPBQhc2wHlEA==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.hakankuru.eventhub
+2026-06-07 18:42:44.349 24817-24817 ankuru.eventhub         com.hakankuru.eventhub               I  AssetManager2(0x765985267c78) locale list changing from [] to [en-US]
+2026-06-07 18:42:44.370 24817-24817 GraphicsEnvironment     com.hakankuru.eventhub               V  Currently set values for:
+2026-06-07 18:42:44.370 24817-24817 GraphicsEnvironment     com.hakankuru.eventhub               V    angle_gl_driver_selection_pkgs=[]
+2026-06-07 18:42:44.370 24817-24817 GraphicsEnvironment     com.hakankuru.eventhub               V    angle_gl_driver_selection_values=[]
+2026-06-07 18:42:44.370 24817-24817 GraphicsEnvironment     com.hakankuru.eventhub               V  com.hakankuru.eventhub is not listed in per-application setting
+2026-06-07 18:42:44.370 24817-24817 GraphicsEnvironment     com.hakankuru.eventhub               V  ANGLE allowlist from config: com.dreamgames.royalmatch com.dts.freefiremax com.dxx.firenow com.gramgames.mergedragons com.ludo.king com.mojang.minecraftpe com.my.defense com.nintendo.zaka com.os.airforce com.playrix.fishdomdd.gplay io.teslatech.callbreak jp.konami.prospia net.peakgames.toonblast
+2026-06-07 18:42:44.370 24817-24817 GraphicsEnvironment     com.hakankuru.eventhub               V  com.hakankuru.eventhub is not listed in ANGLE allowlist or settings, returning default
+2026-06-07 18:42:44.370 24817-24817 GraphicsEnvironment     com.hakankuru.eventhub               V  Neither updatable production driver nor prerelease driver is supported.
+2026-06-07 18:42:44.431 24817-24840 DisplayManager          com.hakankuru.eventhub               I  Choreographer implicitly registered for the refresh rate.
+2026-06-07 18:42:44.436 24817-24817 ankuru.eventhub         com.hakankuru.eventhub               I  AssetManager2(0x76598525f2f8) locale list changing from [] to [en-US]
+2026-06-07 18:42:44.488 24817-24840 EGL_emulation           com.hakankuru.eventhub               I  Opening libGLESv1_CM_emulation.so
+2026-06-07 18:42:44.489 24817-24840 EGL_emulation           com.hakankuru.eventhub               I  Opening libGLESv2_emulation.so
+2026-06-07 18:42:44.507 24817-24840 HWUI                    com.hakankuru.eventhub               W  Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+2026-06-07 18:42:44.507 24817-24840 HWUI                    com.hakankuru.eventhub               W  Failed to initialize 101010-2 format, error = EGL_SUCCESS
+2026-06-07 18:42:44.527 24817-24817 ashmem                  com.hakankuru.eventhub               E  Pinning is deprecated since Android Q. Please use trim or other methods.
+2026-06-07 18:42:44.563 24817-24817 CompatChangeReporter    com.hakankuru.eventhub               D  Compat change id reported: 377864165; UID 10232; state: ENABLED
+2026-06-07 18:42:44.565 24817-24817 DesktopModeFlags        com.hakankuru.eventhub               D  Toggle override initialized to: OVERRIDE_UNSET
+2026-06-07 18:42:44.625 24817-24817 HWUI                    com.hakankuru.eventhub               W  Unknown dataspace 0
+2026-06-07 18:42:44.909 24817-24822 ankuru.eventhub         com.hakankuru.eventhub               I  Compiler allocated 5042KB to compile void android.view.ViewRootImpl.performTraversals()
+2026-06-07 18:42:44.975 24817-24817 ankuru.eventhub         com.hakankuru.eventhub               I  hiddenapi: Accessing hidden method Landroid/os/SystemProperties;->addChangeCallback(Ljava/lang/Runnable;)V (runtime_flags=0, domain=platform, api=unsupported) from Landroidx/compose/ui/platform/AndroidComposeView$Companion; (domain=app) using reflection: allowed
+2026-06-07 18:42:45.297 24817-24817 Choreographer           com.hakankuru.eventhub               I  Skipped 30 frames!  The application may be doing too much work on its main thread.
+2026-06-07 18:42:45.957 24817-24817 Choreographer           com.hakankuru.eventhub               I  Skipped 38 frames!  The application may be doing too much work on its main thread.
+2026-06-07 18:42:46.006 24817-24817 InsetsController        com.hakankuru.eventhub               D  hide(ime(), fromIme=false)
+2026-06-07 18:42:46.006 24817-24817 ImeTracker              com.hakankuru.eventhub               I  com.hakankuru.eventhub:c39a13e9: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2026-06-07 18:42:48.939 24817-24817 InsetsController        com.hakankuru.eventhub               D  show(ime(), fromIme=false)
+2026-06-07 18:42:48.940 24817-24817 ImeTracker              com.hakankuru.eventhub               I  com.hakankuru.eventhub:36e62c1: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2026-06-07 18:42:48.943 24817-24817 InsetsController        com.hakankuru.eventhub               D  Setting requestedVisibleTypes to -1 (was -9)
+2026-06-07 18:42:48.969 24817-24817 AssistStructure         com.hakankuru.eventhub               I  Flattened final assist data: 688 bytes, containing 1 windows, 4 views
+2026-06-07 18:42:48.998 24817-24817 ImeTracker              com.hakankuru.eventhub               I  com.hakankuru.eventhub:25a20abe: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2026-06-07 18:42:48.999 24817-24817 InsetsController        com.hakankuru.eventhub               D  show(ime(), fromIme=false)
+2026-06-07 18:42:48.999 24817-24817 ImeTracker              com.hakankuru.eventhub               I  com.hakankuru.eventhub:25a20abe: onCancelled at PHASE_CLIENT_REPORT_REQUESTED_VISIBLE_TYPES
+2026-06-07 18:42:49.030 24817-24817 RemoteInpu...ectionImpl com.hakankuru.eventhub               W  requestCursorUpdates on inactive InputConnection
+2026-06-07 18:42:49.206 24817-24817 Autofill Status         com.hakankuru.eventhub               D  Autofill popup isn't shown because autofill is not available.
+                                                                                                    
+                                                                                                    Did you set up autofill?
+                                                                                                    1. Go to Settings > System > Languages&input > Advanced > Autofill Service
+                                                                                                    2. Pick a service
+                                                                                                    
+                                                                                                    Did you add an account?
+                                                                                                    1. Go to Settings > System > Languages&input > Advanced
+                                                                                                    2. Click on the settings icon next to the Autofill Service
+                                                                                                    3. Add your account
+2026-06-07 18:42:49.594 24817-24817 InteractionJankMonitor  com.hakankuru.eventhub               W  Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.hakankuru.eventhub
+2026-06-07 18:42:49.809 24817-24817 ImeTracker              com.hakankuru.eventhub               I  com.hakankuru.eventhub:36e62c1: onShown
+2026-06-07 18:42:50.198 24817-24860 ProfileInstaller        com.hakankuru.eventhub               D  Installing profile for com.hakankuru.eventhub
+2026-06-07 18:42:55.201 24817-24817 AssistStructure         com.hakankuru.eventhub               I  Flattened final assist data: 700 bytes, containing 1 windows, 4 views
+2026-06-07 18:42:55.224 24817-24817 InsetsController        com.hakankuru.eventhub               D  show(ime(), fromIme=false)
+2026-06-07 18:42:55.226 24817-24817 ImeTracker              com.hakankuru.eventhub               I  com.hakankuru.eventhub:e8fbdfd: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT_BY_INSETS_API fromUser false
+2026-06-07 18:42:55.226 24817-24817 ImeTracker              com.hakankuru.eventhub               I  com.hakankuru.eventhub:e8fbdfd: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-06-07 18:42:55.253 24817-24817 Autofill Status         com.hakankuru.eventhub               D  Autofill popup isn't shown because autofill is not available.
+                                                                                                    
+                                                                                                    Did you set up autofill?
+                                                                                                    1. Go to Settings > System > Languages&input > Advanced > Autofill Service
+                                                                                                    2. Pick a service
+                                                                                                    
+                                                                                                    Did you add an account?
+                                                                                                    1. Go to Settings > System > Languages&input > Advanced
+                                                                                                    2. Click on the settings icon next to the Autofill Service
+                                                                                                    3. Add your account
+2026-06-07 18:42:55.256 24817-24817 ImeTracker              com.hakankuru.eventhub               I  com.hakankuru.eventhub:8b0ad998: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+2026-06-07 18:42:55.257 24817-24817 InsetsController        com.hakankuru.eventhub               D  show(ime(), fromIme=false)
+2026-06-07 18:42:55.258 24817-24817 ImeTracker              com.hakankuru.eventhub               I  com.hakankuru.eventhub:8b0ad998: onCancelled at PHASE_CLIENT_APPLY_ANIMATION
+2026-06-07 18:42:58.681 24817-24817 InsetsController        com.hakankuru.eventhub               D  hide(ime(), fromIme=false)
+2026-06-07 18:42:58.683 24817-24817 ImeTracker              com.hakankuru.eventhub               I  com.hakankuru.eventhub:bd7d0a43: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_BY_INSETS_API fromUser false
+2026-06-07 18:42:58.684 24817-24817 WindowOnBackDispatcher  com.hakankuru.eventhub               W  sendCancelIfRunning: isInProgress=false callback=android.view.ImeBackAnimationController@346e719
+2026-06-07 18:42:58.684 24817-24817 InsetsController        com.hakankuru.eventhub               D  Setting requestedVisibleTypes to -9 (was -1)
+2026-06-07 18:42:58.926 24817-24817 ImeTracker              com.hakankuru.eventhub               I  system_server:df6d5498: onCancelled at PHASE_CLIENT_ON_CONTROLS_CHANGED
+
+
+
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.6)
+
+2026-06-07T18:42:21.614+03:00  INFO 8364 --- [EventTime] [           main] c.h.EventTime.EventTimeApplication       : Starting EventTimeApplication using Java 21.0.9 with PID 8364 (C:\Users\Hakan\AndroidStudioProjects\UniEventHub\EventTime\target\classes started by Hakan in C:\Users\Hakan\AndroidStudioProjects\UniEventHub\EventTime)
+2026-06-07T18:42:21.619+03:00  INFO 8364 --- [EventTime] [           main] c.h.EventTime.EventTimeApplication       : No active profile set, falling back to 1 default profile: "default"
+2026-06-07T18:42:24.011+03:00  INFO 8364 --- [EventTime] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-07T18:42:24.303+03:00  INFO 8364 --- [EventTime] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 263 ms. Found 9 JPA repository interfaces.
+2026-06-07T18:42:25.277+03:00  INFO 8364 --- [EventTime] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-06-07T18:42:25.296+03:00  INFO 8364 --- [EventTime] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-07T18:42:25.296+03:00  INFO 8364 --- [EventTime] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.21]
+2026-06-07T18:42:25.402+03:00  INFO 8364 --- [EventTime] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 3698 ms
+2026-06-07T18:42:25.620+03:00  INFO 8364 --- [EventTime] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-06-07T18:42:25.712+03:00  INFO 8364 --- [EventTime] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.12.Final
+2026-06-07T18:42:26.380+03:00  INFO 8364 --- [EventTime] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-07T18:42:26.417+03:00  INFO 8364 --- [EventTime] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-07T18:42:26.561+03:00  INFO 8364 --- [EventTime] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@73ddb7ef
+2026-06-07T18:42:26.562+03:00  INFO 8364 --- [EventTime] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-07T18:42:26.663+03:00  INFO 8364 --- [EventTime] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/postgres]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.3
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-07T18:42:27.231+03:00  WARN 8364 --- [EventTime] [           main] org.hibernate.orm.core                   : HHH000038: Composite id class does not override equals(): com.hakankuru.EventTime.entity.EventParticipantId
+2026-06-07T18:42:27.231+03:00  WARN 8364 --- [EventTime] [           main] org.hibernate.orm.core                   : HHH000038: Composite id class does not override equals(): com.hakankuru.EventTime.entity.ClubMemberId
+2026-06-07T18:42:27.944+03:00  INFO 8364 --- [EventTime] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-07T18:42:28.050+03:00  INFO 8364 --- [EventTime] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-07T18:42:28.099+03:00  INFO 8364 --- [EventTime] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-06-07T18:42:28.336+03:00  INFO 8364 --- [EventTime] [           main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-06-07T18:42:28.336+03:00  WARN 8364 --- [EventTime] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-06-07T18:42:28.984+03:00  WARN 8364 --- [EventTime] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-07T18:42:29.583+03:00  INFO 8364 --- [EventTime] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-06-07T18:42:29.588+03:00  INFO 8364 --- [EventTime] [           main] c.h.EventTime.EventTimeApplication       : Started EventTimeApplication in 8.694 seconds (process running for 9.42)
+2026-06-07T18:42:38.763+03:00  INFO 8364 --- [EventTime] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-07T18:42:38.764+03:00  INFO 8364 --- [EventTime] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-07T18:42:38.766+03:00  INFO 8364 --- [EventTime] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+Hibernate: select u1_0.user_id,u1_0.department_id,u1_0.email,u1_0.email_verified,u1_0.global_role,u1_0.name,u1_0.password,u1_0.verification_code from users u1_0 where u1_0.email=?
+Hibernate: select d1_0.department_id,f1_0.faculty_id,f1_0.name,u1_0.university_id,u1_0.location,u1_0.name,d1_0.name from departments d1_0 left join faculties f1_0 on f1_0.faculty_id=d1_0.faculty_id left join universities u1_0 on u1_0.university_id=f1_0.university_id where d1_0.department_id=?
+Hibernate: select u1_0.user_id,u1_0.department_id,u1_0.email,u1_0.email_verified,u1_0.global_role,u1_0.name,u1_0.password,u1_0.verification_code from users u1_0 where u1_0.email=?
+
+
+
+2026-06-06 14:48:30.175 UTC [30] LOG:  checkpoint starting: time
+
+2026-06-06 14:48:30.295 UTC [30] LOG:  checkpoint complete: wrote 1 buffers (0.0%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.104 s, sync=0.005 s, total=0.121 s; sync files=2, longest=0.004 s, average=0.003 s; distance=1 kB, estimate=69 kB; lsn=0/1B7D980, redo lsn=0/1B7D928
+
+
+PostgreSQL Database directory appears to contain a database; Skipping initialization
+
+
+2026-06-07 14:02:25.496 UTC [1] LOG:  starting PostgreSQL 18.3 (Debian 18.3-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+
+2026-06-07 14:02:25.499 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+
+2026-06-07 14:02:25.499 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+
+2026-06-07 14:02:25.503 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+
+2026-06-07 14:02:25.511 UTC [32] LOG:  database system was interrupted; last known up at 2026-06-06 14:48:30 UTC
+
+2026-06-07 14:02:25.644 UTC [32] LOG:  database system was not properly shut down; automatic recovery in progress
+
+2026-06-07 14:02:25.648 UTC [32] LOG:  redo starts at 0/1B7D928
+
+2026-06-07 14:02:25.648 UTC [32] LOG:  invalid record length at 0/1B7DA30: expected at least 24, got 0
+
+2026-06-07 14:02:25.648 UTC [32] LOG:  redo done at 0/1B7D9F8 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+
+2026-06-07 14:02:25.653 UTC [30] LOG:  checkpoint starting: end-of-recovery immediate wait
+
+2026-06-07 14:02:25.670 UTC [30] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.004 s, sync=0.003 s, total=0.019 s; sync files=2, longest=0.002 s, average=0.002 s; distance=0 kB, estimate=0 kB; lsn=0/1B7DA30, redo lsn=0/1B7DA30
+
+2026-06-07 14:02:25.679 UTC [1] LOG:  database system is ready to accept connections
+
+2026-06-07 14:21:35.254 UTC [49] ERROR:  relation "department" does not exist at character 16
+
+2026-06-07 14:21:35.254 UTC [49] STATEMENT:  SELECT  * FROM department;
+
+2026-06-07 14:21:52.173 UTC [49] ERROR:  relation "university" does not exist at character 16
+
+2026-06-07 14:21:52.173 UTC [49] STATEMENT:  SELECT  * FROM university;
+
+2026-06-07 14:22:25.928 UTC [30] LOG:  checkpoint starting: time
+
+2026-06-07 14:22:26.163 UTC [30] LOG:  checkpoint complete: wrote 2 buffers (0.0%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.218 s, sync=0.004 s, total=0.249 s; sync files=3, longest=0.003 s, average=0.002 s; distance=5 kB, estimate=5 kB; lsn=0/1B7F008, redo lsn=0/1B7EFB0
+
+2026-06-07 15:42:26.418 UTC [30] LOG:  checkpoint starting: time
+
+2026-06-07 15:42:26.553 UTC [30] LOG:  checkpoint complete: wrote 1 buffers (0.0%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.108 s, sync=0.003 s, total=0.136 s; sync files=2, longest=0.002 s, average=0.002 s; distance=2 kB, estimate=5 kB; lsn=0/1B7F990, redo lsn=0/1B7F938
+

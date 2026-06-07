@@ -8,6 +8,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -23,11 +24,17 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            sessionManager.getLoginState().collect { isLoggedIn ->
-                if (isLoggedIn) {
-                    _startDestination.value = "home" // This should match Screen.Home.route
-                } else {
-                    _startDestination.value = "login" // This should match Screen.Login.route
+            // isLoggedIn ve role'ü aynı anda dinle
+            combine(
+                sessionManager.getLoginState(),
+                sessionManager.getUserRole()
+            ) { isLoggedIn, role ->
+                Pair(isLoggedIn, role)
+            }.collect { (isLoggedIn, role) ->
+                _startDestination.value = when {
+                    !isLoggedIn          -> "login"
+                    role == "SUPER_ADMIN" -> "admin_dashboard"  // Admin direkt kendi paneline gider
+                    else                  -> "home"              // Normal kullanıcı home'a gider
                 }
                 _isLoading.value = false
             }

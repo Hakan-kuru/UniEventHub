@@ -1,0 +1,16 @@
+--- eventhub/app/src/main/java/com/hakankuru/eventhub/presentation/ui/auth/AuthViewModel.kt
++++ eventhub/app/src/main/java/com/hakankuru/eventhub/presentation/ui/auth/AuthViewModel.kt
+@@ -35,8 +35,11 @@
+                     role  = response.role        // ← role artık kaydediliyor
+                 )
+ 
+-                onSuccess(response)
+-
++                // DataStore yazma islemi tamamlandigini varsayiyoruz cunku suspend bir fonksiyon olarak asagida devam edecek. 
++                // Ancak daha guvenli olmasi icin UI'i bilgilendiriyoruz
++                kotlinx.coroutines.delay(100)
++                
++                onSuccess(response)
+             } catch (e: Exception) {
+                 error.value = e.message ?: "Login error"
+             } finally {

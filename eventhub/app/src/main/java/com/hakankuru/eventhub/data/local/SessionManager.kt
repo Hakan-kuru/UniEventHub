@@ -21,10 +21,12 @@ class SessionManager(
         private val IS_LOGGED_IN = booleanPreferencesKey("is_logged_in")
         // JWT Token bilgisini tutacağız
         private val JWT_TOKEN = stringPreferencesKey("jwt_token")
+        // Kullanıcının global rolünü tutacağız (SUPER_ADMIN, ADMIN, USER vs.)
+        private val USER_ROLE  = stringPreferencesKey("user_role")
     }
 
-    // Login olunca true ve token kaydedilecek
-    suspend fun saveAuthSession(isLoggedIn: Boolean, token: String? = null) {
+    // Login olunca true, token ve role kaydedilecek
+    suspend fun saveAuthSession(isLoggedIn: Boolean, token: String? = null, role: String? = null) {
 
         context.dataStore.edit { preferences ->
 
@@ -34,6 +36,18 @@ class SessionManager(
             } else {
                 preferences.remove(JWT_TOKEN)
             }
+            if (role != null) {
+                preferences[USER_ROLE] = role
+            } else {
+                preferences.remove(USER_ROLE)
+            }
+        }
+    }
+
+    // Kaydedilmiş role'ü okuyacağız
+    fun getUserRole(): Flow<String?> {
+        return context.dataStore.data.map { preferences ->
+            preferences[USER_ROLE]
         }
     }
 

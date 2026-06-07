@@ -1,0 +1,31 @@
+--- eventhub/app/src/main/java/com/hakankuru/eventhub/presentation/admin/AdminLoginScreen.kt
++++ eventhub/app/src/main/java/com/hakankuru/eventhub/presentation/admin/AdminLoginScreen.kt
+@@ -10,6 +10,7 @@
+ import androidx.hilt.navigation.compose.hiltViewModel
+ import com.hakankuru.eventhub.domain.model.RoleGuard
+ import com.hakankuru.eventhub.presentation.ui.auth.AuthViewModel
++import kotlinx.coroutines.launch
+ 
+ @Composable
+ fun AdminLoginScreen(
+@@ -21,6 +22,7 @@
+ 
+     val isLoading by viewModel.isLoading
+     val error     by viewModel.error
++    val coroutineScope = rememberCoroutineScope()
+ 
+     Column(
+@@ -62,11 +64,15 @@
+                     // GlobalRole kontrolü — sadece SUPER_ADMIN girebilir
+                     // authResponse içindeki role bilgisini kontrol et
+                     if (authResponse.role == "SUPER_ADMIN") {
+-                        onLoginSuccess()
++                        coroutineScope.launch {
++                            onLoginSuccess()
++                        }
+                     } else {
+                         roleError = "Bu panel yalnızca Süper Admin'e özeldir. Yetkiniz bulunmuyor."
+                         // Oturumu temizle — yanlış role ile token saklanmamalı
++                        // session temizliği AuthViewModel üzerinden yapılabilir (burada logic uzamaması için)
+                     }
+                 }
