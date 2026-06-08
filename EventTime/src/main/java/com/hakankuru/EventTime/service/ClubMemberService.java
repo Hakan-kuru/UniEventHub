@@ -5,7 +5,6 @@ import com.hakankuru.EventTime.entity.ClubMember;
 import com.hakankuru.EventTime.entity.ClubMemberId;
 import com.hakankuru.EventTime.entity.ClubRole;
 import com.hakankuru.EventTime.entity.User;
-import com.hakankuru.EventTime.exception.NotEnoughAdminsException;
 import com.hakankuru.EventTime.exception.UserAlreadyInClubException;
 import com.hakankuru.EventTime.repository.ClubMemberRepository;
 import com.hakankuru.EventTime.repository.ClubRepository;
@@ -67,9 +66,6 @@ public class ClubMemberService {
 
         if (membership.getClubRole() == ClubRole.ADMIN) {
             long activeAdmins = clubMemberRepository.countActiveAdminsByClubId(clubId);
-            if (activeAdmins <= 1) {
-                throw new NotEnoughAdminsException("Cannot remove the last active admin from the club");
-            }
         }
 
         // Soft delete

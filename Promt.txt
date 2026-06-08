@@ -1,0 +1,213 @@
+# Sprint — Club Admin Member Management System
+
+Bu sprintte Club Admin için gerçek bir “Kulüp Yönetimi” sistemi geliştirilecek.
+
+## Business Rules (Kesin Kurallar)
+
+1. Kullanıcının global role’u önemli değildir. Yetki kontrolü yalnızca `club_members.club_role` üzerinden yapılacaktır.
+
+2. Club Admin sadece ADMIN olduğu kulübü yönetebilir.
+
+3. Bir kullanıcı aynı anda sadece **tek kulübün üyesi olabilir**.
+   Bir kullanıcı `club_members` tablosunda zaten varsa başka kulübe eklenemez.
+
+4. Club Admin başka Club Admin atayamaz.
+   Sadece:
+
+* MEMBER ekleme
+* MEMBER silme
+  işlemleri yapılacaktır.
+
+5. Club Admin kullanıcı ararken yalnızca **kendi kulübünün bağlı olduğu üniversitedeki kullanıcıları** görebilir.
+
+6. Kullanıcı arama email üzerinden yapılacaktır (partial search / contains destekli).
+
+---
+
+## BACKEND
+
+### Endpointler
+
+#### 1. Kulübün üyelerini getir
+
+`GET /api/v1/clubs/{clubId}/members`
+
+Response:
+
+* userId
+* name
+* email
+* departmentName
+* clubRole
+
+Sadece ilgili kulübün ADMIN’i erişebilsin.
+
+---
+
+#### 2. Üniversite içi kullanıcı arama
+
+`GET /api/v1/clubs/{clubId}/users/search?email=value`
+
+Kurallar:
+
+* Club bulunur
+* Club → universityId alınır
+* Sadece aynı university’deki kullanıcılar aranır
+* Email contains mantığı çalışır
+* Zaten başka kulüpte olan kullanıcılar sonuçtan çıkarılır
+
+Response:
+
+* userId
+* name
+* email
+* departmentName
+
+---
+
+#### 3. Kulübe MEMBER ekleme
+
+`POST /api/v1/clubs/{clubId}/members`
+
+Request:
+
+```json
+{
+  "email": "user@test.com"
+}
+```
+
+Kurallar:
+
+* Kullanıcı bulunamazsa hata
+* Başka kulüpte üyeyse hata
+* Aynı kulüpte varsa hata
+* `clubRole = MEMBER`
+* Composite key (`ClubMemberId`) kullanılmalı
+
+---
+
+#### 4. MEMBER silme
+
+`DELETE /api/v1/clubs/{clubId}/members/{userId}`
+
+Kurallar:
+
+* Sadece MEMBER silinsin
+* ADMIN silinemesin
+* Club Admin kendini silemesin
+
+---
+
+### Service Katmanı
+
+Tüm validation’lar Service içinde yapılmalı.
+
+Custom exception ekle:
+
+* UserAlreadyInClubException
+* UserNotInUniversityException
+* ClubPermissionDeniedException
+
+---
+
+## ANDROID
+
+## Profile Screen
+
+Eğer kullanıcı herhangi bir kulüpte `clubRole == ADMIN` ise:
+
+“Kulüp Yönetimi” butonu göster.
+
+Buton:
+`ClubMemberManagementScreen(clubId)`
+
+Buton görünmesin:
+
+* MEMBER
+* USER
+* Club kaydı olmayan kullanıcı
+
+RoleGuard genişlet:
+
+* `adminClubIds(profile)`
+* `canManageClub(profile, clubId)`
+
+---
+
+## ClubMemberManagementScreen
+
+Ekran bölümleri:
+
+### 1. Search Area
+
+* Email search TextField
+* debounce search
+* sonuç listesi
+
+Her kullanıcı kartında:
+`Üye Ekle`
+
+---
+
+### 2. Member List
+
+Kulübün mevcut üyeleri gösterilsin.
+
+Kart:
+
+* Name
+* Email
+* Department
+* Role badge
+
+MEMBER ise:
+`Sil`
+
+ADMIN ise:
+“Kulüp Yöneticisi” badge (silme yok)
+
+---
+
+## ViewModel
+
+`ClubMemberManagementViewModel`
+
+StateFlow kullanılacak.
+
+Fonksiyonlar:
+
+* fetchMembers()
+* searchUsers(email)
+* addMember(email)
+* removeMember(userId)
+
+UiState:
+
+* Loading
+* Success
+* Error
+
+Başarılı işlem sonrası:
+otomatik refresh yapılmalı.
+
+---
+
+## Navigation
+
+Profile → Club Management geçişi eklensin.
+
+Unauthorized access:
+`UnauthorizedScreen`
+
+---
+
+## Technical Constraints
+
+* Clean Architecture korunacak
+* Repository pattern bozulmayacak
+* DTO kullanılacak, Entity Android’e taşınmayacak
+* Loading/Error state zorunlu
+* Hardcoded data olmayacak
+* API response sonrası UI refresh yapılacak
+* Sprint sonunda yapılan her değişiklik `SPRINT_CLUB_MEMBER_MANAGEMENT.md` içinde raporlansın
