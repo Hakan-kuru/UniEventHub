@@ -40,18 +40,19 @@ public class UserService {
                 .map(membership -> new UserClubDTO(
                         membership.getClub().getClubId(),
                         membership.getClub().getName(),
-                        membership.getClubRole()
+                        membership.getClubRole() != null ? membership.getClubRole() : com.hakankuru.EventTime.entity.ClubRole.MEMBER
                 ))
                 .collect(Collectors.toList());
 
-        // ADMIN rolü için universityId'yi users_roles tablosundan çek
+        // Users_roles üzerinden üniversite bilgisi çekme (GlobalRole enum'u tek değer 'USER' içerdiği için doğrudan string kontrolü yapılabilir veya admin rolü users_roles daki rol adına göre filtrelenir)
         Long universityId = null;
-        if (user.getGlobalRole() == GlobalRole.ADMIN) {
-            Optional<UserRole> adminRole = userRoleRepository
-                    .findByUser_UserIdAndRole(userId, GlobalRole.ADMIN.name());
-            universityId = adminRole
-                    .map(r -> r.getUniversity() != null ? r.getUniversity().getUniversityId() : null)
-                    .orElse(null);
+        Optional<UserRole> adminRole = userRoleRepository.findByUser_UserIdAndRole(userId, "ADMIN");
+        Optional<UserRole> superAdminRole = userRoleRepository.findByUser_UserIdAndRole(userId, "SUPER_ADMIN");
+
+        if (adminRole.isPresent()) {
+            universityId = adminRole.get().getUniversity() != null ? adminRole.get().getUniversity().getUniversityId() : null;
+        } else if (superAdminRole.isPresent()) {
+            universityId = superAdminRole.get().getUniversity() != null ? superAdminRole.get().getUniversity().getUniversityId() : null;
         }
 
         return new UserProfileResponse(

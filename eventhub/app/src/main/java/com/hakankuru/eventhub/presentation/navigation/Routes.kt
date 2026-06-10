@@ -24,6 +24,12 @@ sealed class Route(val route: String) {
     object ClubAdminMembers : Route("club_admin_members/{clubId}") {
         fun createRoute(clubId: Long) = "club_admin_members/$clubId"
     }
+
+    // Route sealed class'ının içerisine eklenecek nesne:
+
+    object ClubMemberManagement : Route("club_member_management/{clubId}") {
+        fun createRoute(clubId: Long) = "club_member_management/$clubId"
+    }
 }
 
 sealed class BottomNavItem(val route: String, val title: String) {

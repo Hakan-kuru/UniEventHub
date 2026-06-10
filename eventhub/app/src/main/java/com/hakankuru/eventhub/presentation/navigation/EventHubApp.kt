@@ -28,6 +28,7 @@ import com.hakankuru.eventhub.presentation.admin.AdminLoginScreen
 import com.hakankuru.eventhub.presentation.admin.SuperAdminPanelScreen
 import com.hakankuru.eventhub.presentation.clubs.ClubAdminCreateEventScreen
 import com.hakankuru.eventhub.presentation.clubs.ClubAdminMembersScreen
+import com.hakankuru.eventhub.presentation.clubs.ClubMemberManagementScreen
 import com.hakankuru.eventhub.presentation.clubs.ClubsScreen
 import com.hakankuru.eventhub.presentation.home.HomeScreen
 import com.hakankuru.eventhub.presentation.profile.ProfileScreen
@@ -162,8 +163,13 @@ fun EventHubApp(
                 )
             }
 
+
+            // 1. ProfileScreen composable çağrısını şu şekilde güncelliyoruz:
             composable(Route.Profile.route) {
                 ProfileScreen(
+                    onNavigateToClubManagement = { clubId ->
+                        navController.navigate(Route.ClubMemberManagement.createRoute(clubId))
+                    },
                     onLogout = {
                         sessionViewModel.logout()
                         onLogout()
@@ -257,6 +263,22 @@ fun EventHubApp(
                 if (RoleGuard.isClubAdmin(profile, clubId)) {
                     ClubAdminMembersScreen(
                         clubId         = clubId,
+                        onNavigateBack = { navController.popBackStack() }
+                    )
+                } else {
+                    UnauthorizedScreen(
+                        onNavigateBack = { navController.popBackStack() }
+                    )
+                }
+            }
+            composable(Route.ClubMemberManagement.route) { backStackEntry ->
+                val clubId = backStackEntry.arguments?.getString("clubId")?.toLongOrNull() ?: 0L
+                val profile = (sessionState as? SessionState.Authenticated)?.profile
+
+                // Güvenlik koruması: Sadece o kulübün gerçek adminiyse sayfaya erişebilir, değilse Kovulur
+                if (RoleGuard.isClubAdmin(profile, clubId)) {
+                    ClubMemberManagementScreen(
+                        clubId = clubId,
                         onNavigateBack = { navController.popBackStack() }
                     )
                 } else {

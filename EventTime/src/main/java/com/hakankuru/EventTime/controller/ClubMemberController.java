@@ -22,7 +22,7 @@ public class ClubMemberController {
         return ResponseEntity.ok(clubMemberService.getClubMembers(clubId));
     }
 
-    @PostMapping
+    @PostMapping("/add")
     @PreAuthorize("@clubSecurity.isClubAdmin(authentication, #clubId) or hasRole('SUPER_ADMIN')")
     public ResponseEntity<Void> addMember(
             @PathVariable Long clubId,

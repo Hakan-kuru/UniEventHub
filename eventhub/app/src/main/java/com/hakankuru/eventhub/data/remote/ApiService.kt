@@ -1,5 +1,6 @@
 package com.hakankuru.eventhub.data.remote
 
+import com.hakankuru.eventhub.data.remote.request.AddClubMemberRequest
 import com.hakankuru.eventhub.data.remote.request.AuthResponse
 import com.hakankuru.eventhub.data.remote.request.LoginRequest
 import com.hakankuru.eventhub.data.remote.request.RegisterRequest
@@ -9,10 +10,12 @@ import com.hakankuru.eventhub.data.remote.request.UserUpdateRequest
 import com.hakankuru.eventhub.data.remote.request.AssignAdminRequest
 import com.hakankuru.eventhub.data.remote.response.AdminResponse
 import com.hakankuru.eventhub.data.remote.response.AdminUserDto
+import com.hakankuru.eventhub.data.remote.response.ClubMemberManagementResponse
 import com.hakankuru.eventhub.data.remote.response.ClubMemberResponse
 import com.hakankuru.eventhub.data.remote.response.ClubResponse
 import com.hakankuru.eventhub.data.remote.response.EventResponse
 import com.hakankuru.eventhub.data.remote.response.UserProfileResponse
+import com.hakankuru.eventhub.data.remote.response.UserSearchResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -20,8 +23,32 @@ import retrofit2.http.PUT
 import retrofit2.http.GET
 import retrofit2.http.DELETE
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
+
+    @GET("v1/clubs/{clubId}/members-mgmt")
+    suspend fun getClubMembersMgmt(
+        @Path("clubId") clubId: Long
+    ): Response<List<ClubMemberManagementResponse>>
+
+    @GET("v1/clubs/{clubId}/users/search")
+    suspend fun searchUsersForClub(
+        @Path("clubId") clubId: Long,
+        @Query("email") email: String
+    ): Response<List<UserSearchResponse>>
+
+    @POST("v1/clubs/{clubId}/members")
+    suspend fun addMemberToClub(
+        @Path("clubId") clubId: Long,
+        @Body request: AddClubMemberRequest
+    ): Response<Unit>
+
+    @DELETE("v1/clubs/{clubId}/members/{userIdToRemove}")
+    suspend fun removeMemberFromClub(
+        @Path("clubId") clubId: Long,
+        @Path("userIdToRemove") userIdToRemove: Long
+    ): Response<Unit>
 
     @POST("auth/register")
     suspend fun register(
