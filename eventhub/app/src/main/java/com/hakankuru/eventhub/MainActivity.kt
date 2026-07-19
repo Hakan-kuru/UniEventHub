@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.hakankuru.eventhub.presentation.ui.main.MainViewModel
-import com.hakankuru.eventhub.presentation.ui.navigation.NavGraph
+
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,19 +30,19 @@ class MainActivity : ComponentActivity() {
             val isLoading by viewModel.isLoading.collectAsState()
             val startDestination by viewModel.startDestination.collectAsState()
 
-            if (isLoading || startDestination == null) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
-            } else {
-                val navController = rememberNavController()
-                NavGraph(
-                    navController = navController,
-                    startDestination = startDestination!!,
-                    onLogoutClick = {
-                        viewModel.logout()
+            com.hakankuru.eventhub.presentation.ui.theme.EventhubTheme {
+                if (isLoading || startDestination == null) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
                     }
-                )
+                } else {
+                    androidx.compose.runtime.key(startDestination) {
+                        com.hakankuru.eventhub.presentation.navigation.EventHubApp(
+                            startDestination = startDestination!!,
+                            onLogout = { viewModel.logout() }
+                        )
+                    }
+                }
             }
         }
     }
