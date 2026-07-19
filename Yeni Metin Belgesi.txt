@@ -1,0 +1,66 @@
+UniEventHub Android tarafında bir sonraki sprint olarak **Real Data Integration & Role Stabilization** sprintini uygula.
+
+Amaç: Mock/stub verileri kaldırıp gerçek backend entegrasyonuna geçmek, role bazlı UI kontrolünü oturtmak ve navigation güvenliğini sağlamak.
+
+Yapılacaklar:
+
+1. **ClubsScreen gerçek backend verisine bağlansın**
+
+* Hardcoded:
+
+  * `isClubMember = true`
+  * `isClubAdmin = true`
+    kaldırılacak.
+* Kulüpler gerçek API’den yüklenecek.
+* Kullanıcının kulüp üyelikleri ve admin yetkileri `/me` endpoint’inden gelen profile verisine göre belirlenecek.
+* Club admin sadece kendi kulübünde yönetim aksiyonlarını görmeli.
+* Member/member olmayan kullanıcı farklı UI görmeli.
+
+2. **AdminDashboard gerçek data kullansın**
+
+* Fake dashboard verileri kaldırılsın.
+* Kulüp sayısı, veriler vb. gerçek API response’larından gelsin.
+* TODO kalan admin aksiyonları çalışır hale getirilsin.
+* SuperAdminViewModel gerçek şekilde UI’a bağlansın.
+
+3. **RoleGuard sistemi oluştur**
+
+* Super admin kontrolü
+* Club admin kontrolü
+* Club member kontrolü
+  tek merkezden yönetilsin.
+* UI içinde string role karşılaştırmaları dağınık şekilde yapılmasın.
+
+4. **Session/Profile bootstrap sistemi kur**
+
+* App açıldığında token kontrolü yapılsın.
+* Token varsa `/me` çağrılsın.
+* Kullanıcı profile bilgisi session state içinde tutulsun.
+* Tüm ekranlar role/profile bilgisini bu state üzerinden okuyabilsin.
+
+5. **Admin ekranlarına yetki koruması ekle**
+
+* SUPER_ADMIN olmayan kullanıcı admin ekranlarına erişemesin.
+* Unauthorized navigation engellensin.
+
+6. **Navigation cleanup**
+
+* Eski/orphan screen’leri temizle.
+* Route tanımlı ama composable eksik ekranları düzelt.
+* Stub/TODO navigation parçalarını temizle.
+
+Kurallar:
+
+* Mevcut Clean Architecture yapısını bozma.
+* Mevcut repository/viewmodel yapısını yeniden yazma, eksikleri tamamla.
+* StateFlow ve mevcut Result patternini kullan.
+* Mock data bırakma.
+* Kod tamamlandıktan sonra projenin son durumunu anlatan kısa ama teknik bir **README progress report** oluştur. İçinde:
+
+  * neler tamamlandı,
+  * kalan eksikler,
+  * sprint durumu,
+  * kritik teknik notlar
+    olsun.
+
+İş bitince yapılanları özetle ve hangi dosyalarda ne değiştiğini listele.
