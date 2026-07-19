@@ -12,6 +12,13 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(NotEnoughAdminsException.class)
+    public ResponseEntity<Map<String, String>> handleNotEnoughAdminsException(NotEnoughAdminsException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(UserAlreadyInClubException.class)
     public ResponseEntity<Map<String, String>> handleUserAlreadyInClubException(UserAlreadyInClubException ex) {
         Map<String, String> response = new HashMap<>();

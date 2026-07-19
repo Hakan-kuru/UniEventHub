@@ -1,0 +1,25 @@
+Hibernate: select u1_0.user_id,u1_0.department_id,u1_0.email,u1_0.email_verified,u1_0.global_role,u1_0.name,u1_0.password,u1_0.verification_code from users u1_0 where u1_0.email=?
+Hibernate: select d1_0.department_id,f1_0.faculty_id,f1_0.name,u1_0.university_id,u1_0.location,u1_0.name,d1_0.name from departments d1_0 left join faculties f1_0 on f1_0.faculty_id=d1_0.faculty_id left join universities u1_0 on u1_0.university_id=f1_0.university_id where d1_0.department_id=?
+Hibernate: select u1_0.user_id,u1_0.department_id,u1_0.email,u1_0.email_verified,u1_0.global_role,u1_0.name,u1_0.password,u1_0.verification_code from users u1_0 where u1_0.email=?
+
+
+
+2026-06-10 17:25:01.841 UTC [1] LOG:  starting PostgreSQL 18.3 (Debian 18.3-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+
+2026-06-10 17:25:01.842 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+
+2026-06-10 17:25:01.842 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+
+2026-06-10 17:25:01.846 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+
+2026-06-10 17:25:01.851 UTC [31] LOG:  database system was shut down at 2026-06-10 17:25:00 UTC
+
+2026-06-10 17:25:01.855 UTC [1] LOG:  database system is ready to accept connections
+
+2026-06-10 17:30:01.932 UTC [29] LOG:  checkpoint starting: time
+
+2026-06-10 17:30:02.109 UTC [29] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.014 s, sync=0.011 s, total=0.177 s; sync files=2, longest=0.010 s, average=0.006 s; distance=0 kB, estimate=0 kB; lsn=0/1BE5B48, redo lsn=0/1BE5AF0
+
+
+
+

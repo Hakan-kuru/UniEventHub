@@ -3,7 +3,6 @@ package com.hakankuru.EventTime.dto;
 import lombok.Data;
 
 @Data
-public class AssignAdminRequest {
+public class AddClubMemberRequest {
     private String email;
-    private Long universityId;
 }

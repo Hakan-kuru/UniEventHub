@@ -58,7 +58,8 @@ public class AuthController {
                 user.getUserId(),
                 user.getName(),
                 user.getEmail(),
-                jwtToken
+                jwtToken,
+                user.getGlobalRole().name()   // ← role eklendi
         );
     }
 
@@ -85,7 +86,8 @@ public class AuthController {
                 user.getUserId(),
                 user.getName(),
                 user.getEmail(),
-                jwtToken
+                jwtToken,
+                user.getGlobalRole().name()   // ← role eklendi
         );
     }
 }

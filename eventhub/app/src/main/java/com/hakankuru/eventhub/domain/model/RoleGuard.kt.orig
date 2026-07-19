@@ -8,6 +8,20 @@ import com.hakankuru.eventhub.data.remote.response.UserProfileResponse
  */
 object RoleGuard {
 
+    fun isSuperAdmin(profile: UserProfileResponse?): Boolean =
+        profile?.globalRole == "SUPER_ADMIN"
+
+    /** Kullanıcının üniversite-level ADMIN olup olmadığını kontrol eder. */
+    fun isAdmin(profile: UserProfileResponse?): Boolean =
+        profile?.globalRole == "ADMIN"
+
+    /**
+     * Kullanıcının belirli bir üniversitenin admini olup olmadığını kontrol eder.
+     * SUPER_ADMIN tüm üniversitelere erişebilir.
+     */
+    fun isAdminOfUniversity(profile: UserProfileResponse?, universityId: Long): Boolean =
+        isSuperAdmin(profile) || (isAdmin(profile) && profile?.universityId == universityId)
+
     fun isClubAdmin(profile: UserProfileResponse?, clubId: Long): Boolean =
         profile?.clubs?.any { it.clubId == clubId && it.clubRole == "ADMIN" } == true
 

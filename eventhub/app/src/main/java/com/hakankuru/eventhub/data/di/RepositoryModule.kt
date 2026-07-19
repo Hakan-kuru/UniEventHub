@@ -1,11 +1,13 @@
 package com.hakankuru.eventhub.data.di
 
 import com.hakankuru.eventhub.data.repository.AuthRepositoryImpl
+import com.hakankuru.eventhub.data.repository.ClubMemberRepositoryImpl
 import com.hakankuru.eventhub.data.repository.ClubRepositoryImpl
 import com.hakankuru.eventhub.data.repository.EventRepositoryImpl
 import com.hakankuru.eventhub.data.repository.SuperAdminRepositoryImpl
 import com.hakankuru.eventhub.data.repository.UserRepositoryImpl
 import com.hakankuru.eventhub.domain.repository.AuthRepository
+import com.hakankuru.eventhub.domain.repository.ClubMemberRepository
 import com.hakankuru.eventhub.domain.repository.ClubRepository
 import com.hakankuru.eventhub.domain.repository.EventRepository
 import com.hakankuru.eventhub.domain.repository.SuperAdminRepository
@@ -19,6 +21,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
+
+    @Binds
+    @Singleton
+    abstract fun bindClubMemberRepository(
+        clubMemberRepositoryImpl: ClubMemberRepositoryImpl
+    ): ClubMemberRepository
 
     @Binds
     @Singleton

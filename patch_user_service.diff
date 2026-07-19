@@ -1,0 +1,26 @@
+--- EventTime/src/main/java/com/hakankuru/EventTime/service/UserService.java
++++ EventTime/src/main/java/com/hakankuru/EventTime/service/UserService.java
+@@ -43,15 +43,6 @@
+                 ))
+                 .collect(Collectors.toList());
+ 
+-        // ADMIN rolü için universityId'yi users_roles tablosundan çek
+-        Long universityId = null;
+-        if (user.getGlobalRole() == GlobalRole.ADMIN) {
+-            Optional<UserRole> adminRole = userRoleRepository
+-                    .findByUser_UserIdAndRole(userId, GlobalRole.ADMIN.name());
+-            universityId = adminRole
+-                    .map(r -> r.getUniversity() != null ? r.getUniversity().getUniversityId() : null)
+-                    .orElse(null);
+-        }
+-
+         return new UserProfileResponse(
+             user.getUserId(),
+             user.getName(),
+             user.getEmail(),
+             user.getGlobalRole(),
+-            userClubDTOs,
+-            universityId
++            userClubDTOs
+         );
+     }
