@@ -3,9 +3,13 @@ package com.hakankuru.EventTime.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "event_participants")
+@Getter
+@Setter
 public class EventParticipant {
 
     @EmbeddedId
@@ -23,6 +27,8 @@ public class EventParticipant {
 
     private String status;
     private String attendanceStatus;
+
+    private LocalDateTime registeredAt;
 
     private LocalDateTime updatedAt;
 

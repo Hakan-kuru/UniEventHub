@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ClubMemberService {
@@ -23,6 +26,17 @@ public class ClubMemberService {
     private final ClubMemberRepository clubMemberRepository;
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
+
+    public List<com.hakankuru.EventTime.dto.ClubMemberResponse> getClubMembers(Long clubId) {
+        return clubMemberRepository.findActiveMembershipsByClubId(clubId).stream()
+                .map(m -> new com.hakankuru.EventTime.dto.ClubMemberResponse(
+                        m.getUser().getUserId(),
+                        m.getUser().getEmail(),
+                        m.getUser().getName(),
+                        m.getClubRole(),
+                        m.getStartAt()
+                )).collect(Collectors.toList());
+    }
 
     @Transactional
     public void addMemberToClub(Long clubId, String userEmail, ClubRole role) {

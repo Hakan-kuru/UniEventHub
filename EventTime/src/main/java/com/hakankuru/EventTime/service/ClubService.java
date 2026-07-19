@@ -1,6 +1,7 @@
 package com.hakankuru.EventTime.service;
 
 import com.hakankuru.EventTime.dto.ClubCreateRequest;
+import com.hakankuru.EventTime.dto.ClubResponse;
 import com.hakankuru.EventTime.entity.Club;
 import com.hakankuru.EventTime.entity.ClubMember;
 import com.hakankuru.EventTime.entity.ClubMemberId;
@@ -15,6 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.List;
+import java.util.stream.Collectors;
+import com.hakankuru.EventTime.dto.ClubUpdateRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +34,23 @@ public class ClubService {
         Club club = new Club();
         club.setName(request.getName());
         club.setDescription(request.getDescription());
-        // For now, leaving university as null or you can fetch default university.
         return clubRepository.save(club);
+    }
+
+    @Transactional
+    public ClubResponse updateClub(Long clubId, ClubUpdateRequest request) {
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new RuntimeException("Club not found"));
+        club.setName(request.getName());
+        club.setDescription(request.getDescription());
+        club = clubRepository.save(club);
+        return new ClubResponse(club.getClubId(), club.getName(), club.getDescription());
+    }
+
+    public List<ClubResponse> getAllClubs() {
+        return clubRepository.findAll().stream()
+                .map(c -> new ClubResponse(c.getClubId(), c.getName(), c.getDescription()))
+                .collect(Collectors.toList());
     }
 
     @Transactional

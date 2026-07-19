@@ -9,11 +9,16 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventCreateRequest {
-    private Long clubId;
+public class EventResponse {
+    private Long eventId;
     private String title;
     private String description;
+    private String image;
     private LocalDateTime startAt;
     private LocalDateTime endAt;
+    private LocalDateTime applyStartAt;
+    private LocalDateTime applyEndAt;
     private Integer capacity;
+    private Long clubId;
+    private String clubName;
 }

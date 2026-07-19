@@ -4,16 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventCreateRequest {
+public class ClubResponse {
     private Long clubId;
-    private String title;
+    private String name;
     private String description;
-    private LocalDateTime startAt;
-    private LocalDateTime endAt;
-    private Integer capacity;
 }
