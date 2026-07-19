@@ -1,66 +1,217 @@
-UniEventHub Android tarafında bir sonraki sprint olarak **Real Data Integration & Role Stabilization** sprintini uygula.
+UniEventHub — Role & Admin System Refactor Prompt
 
-Amaç: Mock/stub verileri kaldırıp gerçek backend entegrasyonuna geçmek, role bazlı UI kontrolünü oturtmak ve navigation güvenliğini sağlamak.
+Proje Spring Boot backend + Android (Jetpack Compose + Clean Architecture) mimarisindedir.
 
-Yapılacaklar:
-
-1. **ClubsScreen gerçek backend verisine bağlansın**
-
-* Hardcoded:
-
-  * `isClubMember = true`
-  * `isClubAdmin = true`
-    kaldırılacak.
-* Kulüpler gerçek API’den yüklenecek.
-* Kullanıcının kulüp üyelikleri ve admin yetkileri `/me` endpoint’inden gelen profile verisine göre belirlenecek.
-* Club admin sadece kendi kulübünde yönetim aksiyonlarını görmeli.
-* Member/member olmayan kullanıcı farklı UI görmeli.
-
-2. **AdminDashboard gerçek data kullansın**
-
-* Fake dashboard verileri kaldırılsın.
-* Kulüp sayısı, veriler vb. gerçek API response’larından gelsin.
-* TODO kalan admin aksiyonları çalışır hale getirilsin.
-* SuperAdminViewModel gerçek şekilde UI’a bağlansın.
-
-3. **RoleGuard sistemi oluştur**
-
-* Super admin kontrolü
-* Club admin kontrolü
-* Club member kontrolü
-  tek merkezden yönetilsin.
-* UI içinde string role karşılaştırmaları dağınık şekilde yapılmasın.
-
-4. **Session/Profile bootstrap sistemi kur**
-
-* App açıldığında token kontrolü yapılsın.
-* Token varsa `/me` çağrılsın.
-* Kullanıcı profile bilgisi session state içinde tutulsun.
-* Tüm ekranlar role/profile bilgisini bu state üzerinden okuyabilsin.
-
-5. **Admin ekranlarına yetki koruması ekle**
-
-* SUPER_ADMIN olmayan kullanıcı admin ekranlarına erişemesin.
-* Unauthorized navigation engellensin.
-
-6. **Navigation cleanup**
-
-* Eski/orphan screen’leri temizle.
-* Route tanımlı ama composable eksik ekranları düzelt.
-* Stub/TODO navigation parçalarını temizle.
-
+🔥 Yeni Database Değişikliği
+users_roles tablosuna yeni alan eklendi:
+university_id (nullable)
 Kurallar:
+SUPER_ADMIN → university_id = NULL
+ADMIN → tek bir university_id’ye bağlı
+Sistem artık:
+SUPER_ADMIN → admin atar/siler
+ADMIN → sadece kendi üniversitesi içindeki kulüpleri yönetir
+🧠 İş Kuralları (DEĞİŞMEZ)
+SUPER_ADMIN:
+Kullanıcıyı email ile bulur
+ADMIN rolü atar
+university_id set eder
+Admin kaldırabilir
+ADMIN:
+Kulüp oluşturamaz (opsiyonel: sadece yönetir)
+ClubMember ve ClubRole işlemlerini yapar
+Sadece kendi university_id kapsamındaki kulüpleri yönetir
+USER:
+Sadece normal kullanıcı
+🖥️ BACKEND GÜNCELLEMELERİ
+1. Entity Update
+UserRole entity:
+role
+user
+university (ManyToOne, nullable)
+2. DTO Güncellemeleri
+AssignAdminRequest:
+{
+  "email": "",
+  "universityId": 1
+}
+AdminResponse:
+userId
+email
+role
+universityId
+3. Service Layer
+SuperAdminService
+assignAdminByEmail(email, universityId)
+removeAdmin(userId)
+email ile user bulma
+role update + university bağlama
+Security Rules
+@PreAuthorize:
+SUPER_ADMIN → full access
+ADMIN → sadece kendi universityId
+4. Repository
+UserRepository.findByEmail(email)
+UserRoleRepository.findByUserId()
+5. Controller
+SuperAdminController
+POST /api/v1/admin/assign
+DELETE /api/v1/admin/{userId}
+6. Business Rules
+Aynı user birden fazla ADMIN OLAMAZ
+SUPER_ADMIN university_id NULL kalır
+ADMIN değiştirildiğinde eski role override edilir
+📱 ANDROID GÜNCELLEMELERİ
+1. Auth / Profile Model Update
+UserProfileResponse:
+globalRole
+universityId
+adminClubs
+managedUniversity
+2. SessionViewModel Update
+/me response artık:
+universityId
+role
+admin scope
+3. RoleGuard Update
+isSuperAdmin()
+isAdmin()
+isAdminOfUniversity(universityId)
+4. SuperAdmin Panel (Yeni)
 
-* Mevcut Clean Architecture yapısını bozma.
-* Mevcut repository/viewmodel yapısını yeniden yazma, eksikleri tamamla.
-* StateFlow ve mevcut Result patternini kullan.
-* Mock data bırakma.
-* Kod tamamlandıktan sonra projenin son durumunu anlatan kısa ama teknik bir **README progress report** oluştur. İçinde:
+SuperAdminPanelScreen:
 
-  * neler tamamlandı,
-  * kalan eksikler,
-  * sprint durumu,
-  * kritik teknik notlar
-    olsun.
+Email input
+University dropdown
+“Make Admin” button
+“Remove Admin” button
+Admin list (university bazlı)
+5. API Layer
 
-İş bitince yapılanları özetle ve hangi dosyalarda ne değiştiğini listele.
+Yeni endpointler:
+
+assignAdmin(email, universityId)
+removeAdmin(userId)
+getAdmins()
+6. ViewModel
+
+SuperAdminViewModel:
+
+assignAdmin()
+removeAdmin()
+fetchAdmins()
+⚠️ KRİTİK NOKTALAR
+Backend ve Android universityId mapping birebir aynı olmalı
+Role kontrolü sadece JWT değil, /me üzerinden yapılmalı
+users_roles tablosu artık SINGLE SOURCE OF TRUTH
+Club yetkileri ADMIN → ClubRole ile devam eder
+🎯 SONUÇ HEDEFİ
+Super Admin:
+email ile admin atar/siler
+Admin:
+sadece kendi university scope’unda çalışır
+
+
+
+
+yeni sprint:
+🚀 PROMPT — Super Admin User Management UI + Admin Assignment
+
+UniEventHub projesinde Super Admin panelini geliştirmeye devam et.
+
+📌 Mevcut Sistem Durumu
+Spring Boot backend hazır
+JWT + Role sistemi aktif (GlobalRole: USER, ADMIN, SUPER_ADMIN)
+/api/v1/admin/list → tüm adminleri getiriyor
+/api/v1/admin/assign → email + universityId ile admin atıyor
+/api/v1/admin/{userId} → admin kaldırıyor
+Android tarafında Hilt + MVVM + Clean Architecture kurulu
+SuperAdminPanelScreen mevcut ama sade/yarı tamam
+🎯 Sprint Hedefi
+
+Super Admin paneline şu özellikleri ekle:
+
+1. 👥 Kullanıcı Listeleme
+Backend’den tüm kullanıcıları çeken endpoint kullan
+Liste:
+name
+email
+role (USER / ADMIN / SUPER_ADMIN)
+universityId (varsa)
+LazyColumn ile modern Material3 UI
+2. 🔍 Email Search (Canlı filtreleme)
+SearchBar ekle
+Kullanıcı email yazdıkça liste filtrelensin
+Filter client-side veya backend query ile yapılabilir (tercihen client-side)
+3. 🧑‍💼 Admin Atama (Assign Admin)
+Her USER satırında “Make Admin” butonu
+Tıklanınca:
+email + universityId ile assignAdmin endpoint çağrılır
+UI state:
+Loading indicator
+Success Snackbar
+Error handling (already admin vs.)
+4. 🧨 Admin Kaldırma
+ADMIN olan kullanıcılar için “Remove Admin” butonu
+removeAdmin(userId) endpoint çağrılır
+Liste anında güncellenir (StateFlow refresh)
+5. 🧠 ViewModel (SuperAdminViewModel)
+
+Aşağıdaki state yapısını kullan:
+
+users: StateFlow<List<AdminUserDto>>
+searchQuery: StateFlow<String>
+loading: StateFlow<Boolean>
+error: StateFlow<String?>
+
+Fonksiyonlar:
+
+loadUsers()
+assignAdmin(email, universityId)
+removeAdmin(userId)
+onSearchChange(query)
+6. 📡 Repository Katmanı
+SuperAdminRepository:
+getAllUsers()
+assignAdmin(request)
+removeAdmin(userId)
+7. 🎨 UI Tasarım (Compose Material 3)
+
+SuperAdminPanelScreen içinde:
+
+Layout:
+
+Top:
+“Super Admin Panel” title
+SearchBar (email filter)
+Middle:
+User list (LazyColumn card layout)
+Each Card:
+Name + Email
+Role badge (color coded)
+UniversityId (small text)
+Button:
+USER → “Make Admin”
+ADMIN → “Remove Admin”
+8. 🔁 State Flow Akışı
+Screen sadece ViewModel state dinleyecek
+Direct API call YOK
+Tüm işlemler ViewModel üzerinden
+9. ⚠️ Kurallar
+Entity kullanılmayacak (sadece DTO)
+UI mock data içermeyecek
+Role kontrolü client-side güvenlik için sadece UI filter
+Backend authority her zaman final decision
+🧾 Çıktı
+
+Bana şunları üret:
+
+SuperAdminPanelScreen (tam Compose UI)
+SuperAdminViewModel (StateFlow ile)
+Repository interface + implementation
+DTO’lar (AdminUserDto varsa genişlet)
+Gerekli küçük API servis güncellemeleri
+🎯 Bonus (varsa ekle)
+Admin sayısını üstte gösterecek küçük KPI card
+“Only Super Admin can assign admins” UI lock state
+Empty state (No users found)

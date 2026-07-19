@@ -19,4 +19,12 @@ public class UserRole {
     private User user;
 
     private String role;
+
+    /**
+     * SUPER_ADMIN → NULL
+     * ADMIN       → ilgili üniversiteye bağlı
+     */
+    @ManyToOne
+    @JoinColumn(name = "university_id", nullable = true)
+    private University university;
 }

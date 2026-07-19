@@ -48,6 +48,7 @@ dependencies {
     // 🔥 HILT
     implementation(libs.hilt.android)
     implementation(libs.androidx.ui)
+    implementation(libs.androidx.compose.ui.tooling.data)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
@@ -64,6 +65,8 @@ dependencies {
 
     // 🧭 NAVIGATION
     implementation("androidx.navigation:navigation-compose:2.8.0")
+    // Material Icons Extended
+    implementation("androidx.compose.material:material-icons-extended")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

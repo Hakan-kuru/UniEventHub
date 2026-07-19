@@ -1,117 +1,135 @@
 ﻿# UniEventHub — Sprint Progress Report
-**Sprint:** Real Data Integration & Role Stabilization
-**Tarih:** 2026-06-02
-**Branch:** `feature/role-based-admin-ui`
+**Sprint:** Super Admin User Management UI + Admin Assignment
+**Tarih:** 2026-06-05
+**Branch:** `admin_ui_v2`
 
 ---
 
-## ✅ Bu Sprintte Tamamlananlar
+## ✅ Sprint 2 — Tamamlananlar
 
-### 1. RoleGuard — Merkezi Yetki Sistemi
-- `domain/model/RoleGuard.kt` oluşturuldu
-- `isSuperAdmin()`, `isClubAdmin()`, `isClubMember()`, `adminClubIds()`, `memberClubIds()` fonksiyonları
-- UI içinde artık hiçbir yerde string karşılaştırması (`== "ADMIN"`) yapılmıyor
+### 1. AdminUserDto — Yeni Kotlin Data Class
+- `data/remote/response/AdminUserDto.kt` oluşturuldu
+- Backend `AdminUserDto.java` ile birebir map: `userId`, `name`, `email`, `role`, `universityId`
 
-### 2. SessionViewModel — Bootstrap Sistemi
-- `presentation/ui/session/SessionViewModel.kt` oluşturuldu
-- App açılışında token kontrolü → `/me` çağrısı otomatik yapılıyor
-- `SessionState`: `Loading | NoSession | Authenticated(profile) | Error`
-- Tüm ekranlar profile bilgisini bu state üzerinden okuyor
-- `EventHubApp` içine `hiltViewModel<SessionViewModel>()` ile entegre edildi
+### 2. ApiService — getAllUsers() Endpoint
+- `GET v1/admin/users` eklendi: `suspend fun getAllUsers(): Response<List<AdminUserDto>>`
+- Tüm SuperAdmin endpoint'leri artık tam: assign / remove / list / users
 
-### 3. ClubsScreen — Mock'lardan Temizlendi, Gerçek Data
-- **Kaldırılan:** `isClubMember = true`, `isClubAdmin = true`, `onNavigateToCreateEvent(1L)` hardcode'ları
-- **Eklenen:** `ClubsViewModel` (yeni dosya)
-  - `userRepository.getCurrentUser()` + `clubRepository.getAllClubs()` paralel çağrı
-  - `ClubsUiState`: `Loading | Success(clubs, profile) | Error`
-- Her kulüp kartı, `RoleGuard`'dan gelen gerçek role'e göre render ediliyor
-- Admin'e özel butonlar (Etkinlik Ekle, Üyeler) yalnızca gerçek admin'e görünüyor
-- Loading ve Error state'leri UI'da gösteriliyor
+### 3. SuperAdminRepository — Interface + Impl Güncellendi
+- `domain/repository/SuperAdminRepository.kt`: `getAllUsers(): Result<List<AdminUserDto>>` eklendi
+- `data/repository/SuperAdminRepositoryImpl.kt`: implementasyon eklendi, try/catch + error handling
 
-### 4. AdminDashboard — Statik Veriler Kaldırıldı
-- `AdminSuperViewModel` yeniden yazıldı:
-  - `loadDashboard()` → `superAdminRepository.getAllClubs()` ile gerçek sayıları çekiyor
-  - `AdminDashboardData(clubCount, clubs)` domain modeli eklendi
-  - `createClub()` başarılı olduktan sonra dashboard otomatik yenileniyor
-- `AdminDashboardScreen`:
-  - Sahte sayılar (`"1,245"`, `"42"`) kaldırıldı
-  - Gerçek `dashboardData` StateFlow'a bağlandı
-  - Loading indicator eklendi
-  - Snackbar ile hata/başarı mesajları
-  - `AdminSuperViewModel`'e tam entegrasyon sağlandı
+### 4. SuperAdminViewModel — Tam Yeniden Yazım
+**Önceki durum:** Sadece admin listesi + assign/remove vardı, kullanıcı listesi yoktu
 
-### 5. AdminLoginScreen — GlobalRole Koruması
-- Artık gerçek `AuthViewModel.login()` kullanıyor
-- Login başarılı olsa bile `authResponse.role != "SUPER_ADMIN"` ise admin paneline izin verilmiyor
-- Role hatası kullanıcıya açık mesajla gösteriliyor
-- PasswordVisualTransformation eklendi
+**Yeni durum:**
+- `_allUsers: MutableStateFlow<List<AdminUserDto>>` — backend'den tüm kullanıcılar
+- `_searchQuery: MutableStateFlow<String>` — arama sözcüğü
+- `filteredUsers: StateFlow<List<AdminUserDto>>` — combine() ile client-side filtreleme
+- `adminCount: StateFlow<Int>` — KPI için admin sayısı (combine ile hesaplanır)
+- `loadUsers()` — `/v1/admin/users` çağırır
+- `fetchAdmins()` — `/v1/admin/list` çağırır (admin panel özeti)
+- `assignAdmin(email, universityId)` — assign sonrası hem users hem admins refresh
+- `removeAdmin(userId)` — remove sonrası hem users hem admins refresh
+- `onSearchChange(query)` — arama sorgusunu günceller
+- `resetState()` — snackbar sonrası state sıfırlanır
 
-### 6. AuthResponse — role Alanı Eklendi
-- `data/remote/request/AuthResponse.kt`'ye `role: String?` alanı eklendi
-- Backend'den gelen GlobalRole bilgisi artık client'ta kullanılabilir
+### 5. SuperAdminPanelScreen — Tam UI (encoding düzeltmesi dahil)
+**Önceki durum:** Bozuk encoding (garbled Turkish chars), sadece assign formu + admin list
 
-### 7. ClubRepository — getAllClubs Eklendi
-- `domain/repository/ClubRepository.kt`'ye `getAllClubs()` eklendi
-- `data/repository/ClubRepositoryImpl.kt`'ye implementasyonu yazıldı
-- `ClubsViewModel` bu metodla kulüp listesini kendi başına çekiyor
+**Yeni durum:**
+- **KPI Card:** Üstte `Toplam Admin` + `Toplam Kullanici` sayıları (primaryContainer rengi)
+- **SearchBar:** Email ve isimle canlı filtreleme, Clear butonu
+- **UserListCard:** Her kullanıcı için:
+  - Ad + Email
+  - `RoleBadge` (renk kodlu: SUPER_ADMIN=mor, ADMIN=mavi, USER=gri)
+  - `Üniversite #ID` (admin ise)
+  - `USER` → **"Admin Yap"** butonu (FilledTonalButton)
+  - `ADMIN` → **"Kaldir"** butonu (errorContainer rengi)
+  - `SUPER_ADMIN` → **"Korumalı"** (dokunulamaz chip)
+- **AlertDialog:** "Admin Yap" tıklanınca universityId girişi için dialog açılır
+- **Empty State:** Kullanıcı yoksa veya arama eşleşmesi yoksa açıklayıcı mesaj
+- **Loading State:** CircularProgressIndicator (liste yüklenirken)
+- **Snackbar:** Başarı/hata mesajları
+- Tüm dosya UTF-8 ile yeniden yazıldı (encoding bozukluğu giderildi)
 
-### 8. Navigation — Route Guard + Cleanup
-- `EventHubApp.kt` tamamen yeniden yazıldı:
-  - `SessionViewModel` entegre edildi
-  - Admin ve ClubAdmin route'larına `RoleGuard` koruması eklendi
-  - Yetkisiz erişimde `UnauthorizedScreen` gösteriliyor
-  - Explore route'u artık `Text("TODO")` değil, gerçek `ExploreScreen()` composable'ı
-  - Bottom nav'daki `Explore` ikonu `Icons.Filled.List` → `Icons.Filled.Search` olarak düzeltildi
-  - Login başarısında `sessionViewModel.fetchProfile()` çağrılıyor
-- Orphan `presentation/ui/screen/HomeScreen.kt` **silindi**
-- `Routes.kt` temizlendi: kullanılmayan `AdminUniversity`, `AdminClubs`, `AdminUsers` route'ları kaldırıldı
+### 6. ExploreScreen — Gerçek Event Datası
+**Önceki durum:** `"Yakında: Tüm etkinlikleri burada listeleyebileceksiniz."` stub text
 
-### 9. Yeni Screen'ler
-- `ExploreScreen.kt` — artık stub `Text()` değil, proper Composable
-- `UnauthorizedScreen.kt` — yetkisiz erişimlerde gösterilen ekran
+**Yeni durum:**
+- `ExploreViewModel.kt` oluşturuldu:
+  - `eventRepository.getAllEvents()` çağrısı
+  - `filteredEvents` — combine ile client-side title/clubName filtreleme
+  - `isLoading`, `error` state'leri
+  - `loadEvents()`, `onSearchChange()` fonksiyonları
+- `ExploreScreen.kt` güncellendi:
+  - SearchBar (etkinlik ve kulüp adıyla filtreleme)
+  - `EventCard`: title, clubName, description (2 satır), startAt, capacity
+  - Loading / Error / Empty state'leri
+  - "Tekrar Dene" butonu (error state'de)
 
 ---
 
-## ⏳ Kalan Eksikler (Sprint 2 için)
+## 🔁 Veri Akışı (Sprint 2 Super Admin Paneli)
+
+```
+SuperAdminPanelScreen
+    └─ SuperAdminViewModel (Hilt)
+        ├─ loadUsers()      → SuperAdminRepository.getAllUsers()
+        │                       → ApiService.GET /v1/admin/users
+        │                           → Backend: SuperAdminController.getAllUsers()
+        │                               → SuperAdminService.getAllUsers()
+        ├─ assignAdmin()    → SuperAdminRepository.assignAdmin()
+        │                       → ApiService.POST /v1/admin/assign
+        │                           → Backend: SuperAdminService.assignAdminByEmail()
+        └─ removeAdmin()    → SuperAdminRepository.removeAdmin()
+                                → ApiService.DELETE /v1/admin/{userId}
+                                    → Backend: SuperAdminService.removeAdmin()
+```
+
+---
+
+## ⏳ Kalan Eksikler (Sprint 3 için)
 
 | Özellik | Durum | Not |
 |---------|-------|-----|
-| `ExploreScreen` gerçek event listesi | 🔴 Stub | `EventRepository.getAllEvents()` hazır, UI bağlanmadı |
-| `ClubDetail` ekranı | 🔴 Yok | Route tanımlı değil — Sprint 2 |
-| `EventDetail` ekranı | 🔴 Yok | Route tanımlı değil — Sprint 2 |
-| `AdminUniversity` yönetimi | 🔴 Yok | Backend endpoint'i var |
-| `AdminUsers` yönetimi | 🔴 Yok | Backend endpoint'i var |
-| DateTimePicker entegrasyonu | 🟡 Eksik | `ClubAdminCreateEventScreen`'de ISO-8601 string manuel girişi |
+| `ClubDetail` ekranı | 🔴 Yok | Route tanımlı değil |
+| `EventDetail` ekranı | 🔴 Yok | Route tanımlı değil |
+| `AdminUniversity` yönetimi | 🔴 Yok | Backend endpoint var |
+| DateTimePicker entegrasyonu | 🟡 Eksik | `ClubAdminCreateEventScreen`'de ISO-8601 manuel giriş |
 | Push notification (FCM) | 🔴 Yok | Backend Spring Event altyapısı var |
 | ProfileScreen gerçek data | 🟡 Kısmen | `ProfileViewModel` var, UI doğrulanmadı |
 | Unit test coverage | 🔴 Yok | Hiçbir ViewModel/UseCase testi yok |
+| Token yenileme (Refresh) | 🔴 Yok | OkHttp Authenticator eklenmeli |
+| EventDetail — Join/Leave | 🔴 Yok | API endpoint'leri var (joinEvent/leaveEvent) |
 
 ---
 
 ## 🏗️ Sprint Durumu
 
 ```
-Toplam Madde   : 6
-Tamamlanan     : 6 / 6  ✅
-Kısmi          : 0
-Kalanlar       : Sonraki sprint
+Sprint 2 Toplam Madde  : 9
+Tamamlanan             : 9 / 9  ✅
+Kısmi                  : 0
+Kalanlar               : Sprint 3'e devredildi
 ```
 
 ---
 
 ## 🔴 Kritik Teknik Notlar
 
-1. **`AuthResponse.role` backend uyumu:** Backend `AuthResponse` DTO'sunun da `role` alanını dönmesi
-   gerekiyor. Spring tarafında `AuthResponse.java`'ya `globalRole` alanı eklenmeli. Field adı
-   `role` olarak normalize edildi (mobil `role`, backend `globalRole` dönüyorsa Gson `@SerializedName("globalRole")` eklenebilir).
+1. **`SuperAdminViewModel.adminCount`** combine ile `_allUsers`'dan hesaplanıyor.
+   Ayrı bir `/admin/list` çağrısı yapmadan mevcut kullanıcı listesinden türetiliyor.
 
-2. **`SessionViewModel` Hilt scope:** `EventHubApp` composable'ında `hiltViewModel()` ile
-   oluşturuluyor — Activity scope'ta yaşatmak için `MainActivity`'de `viewModels()` ile çekilip
-   parametre olarak geçirilmesi önerilir; aksi halde recomposition'da yeniden oluşabilir.
+2. **`filteredUsers` StateFlow:** `SharingStarted.WhileSubscribed(5_000)` ile
+   screen recomposition'da gereksiz API çağrısı engelleniyor.
 
-3. **`ClubRepository.getAllClubs()` vs `SuperAdminRepository.getAllClubs()`:** Her iki repository
-   da aynı `GET v1/clubs` endpoint'ini çağırıyor. İleride `ClubsViewModel` ile `AdminSuperViewModel`
-   aynı veriyi paylaştığında cache/single-source-of-truth pattern'i düşünülmeli.
+3. **`assignAdmin` Dialog:** UniversityId girişi şimdi ana form'dan çıkarılıp
+   bir AlertDialog'a taşındı — LIST üzerindeki "Admin Yap" butonuyla tetikleniyor.
+   Bu daha temiz UX sağlıyor.
 
-4. **Token yenileme (Refresh) yok:** Mevcut `RetrofitClient` JWT'yi header'a ekliyor ancak token
-   süresi dolduğunda otomatik yenileme mekanizması bulunmuyor. OkHttp `Authenticator` eklenmeli.
+4. **`ExploreViewModel`** navigation package altında — ileride `presentation/explore/`
+   package'ına taşınması önerilir (ClubsScreen pattern'i gibi).
+
+5. **Backend `findAll()`:** `SuperAdminService.getAllUsers()` içinde `userRepository.findAll()`
+   kullanılıyor — büyük kullanıcı tabanında pagination eklenmeli (Pageable).

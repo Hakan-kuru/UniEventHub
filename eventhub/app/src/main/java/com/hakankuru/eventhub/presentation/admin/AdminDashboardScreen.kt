@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun AdminDashboardScreen(
     onNavigateToCreateClub: () -> Unit = {},
+    onNavigateToSuperAdminPanel: () -> Unit = {},
     viewModel: AdminSuperViewModel = hiltViewModel()
 ) {
     val dashboardData    by viewModel.dashboardData.collectAsState()
@@ -86,6 +86,18 @@ fun AdminDashboardScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Kulüp Yönetimi (Kulüp Ekle)")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(
+                onClick = onNavigateToSuperAdminPanel,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary
+                )
+            ) {
+                Text("Admin Yönetimi (Admin Ata / Kaldır)")
             }
 
             Spacer(modifier = Modifier.height(8.dp))

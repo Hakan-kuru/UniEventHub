@@ -16,4 +16,7 @@ public class UserProfileResponse {
     private String email;
     private GlobalRole globalRole;
     private List<UserClubDTO> clubs;
+
+    /** ADMIN için hangi üniversiteyi yönettiği. SUPER_ADMIN ve USER için null. */
+    private Long universityId;
 }
